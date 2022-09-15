@@ -18,6 +18,37 @@ def parse_get_entity(
     output_format,
     history,
 ):
+    if entity_name == 'sqc':
+        print("     oioi")
+        host_url = check_host_url(host_url)
+        host_url += (
+        'api/v1/'
+        f'organizations/{organization_id}/'
+        f'products/{product_id}/'
+        f'repositories/{repository_id}/'
+        f'{"historical-values/" if history else "latest-values/"}'
+        f'sqc/'
+        f'{entity_id if entity_id else ""}'
+
+        # http://measuresoftgram-service.herokuapp.com/api/v1/organizations/1/products/3/repositories/6/latest-values/sqc/
+
+        )
+        response = ServiceClient.get_entity(host_url)
+
+        extracted_data, headers, data = get_entity(
+            response,
+            entity_id,
+            history
+        )
+
+        if output_format == 'tabular':
+            print(tabulate(extracted_data, headers=headers))
+        elif output_format == 'json':
+            print(json.dumps(data))
+
+
+        return
+
     if output_format not in SUPPORTED_FORMATS:
         print((
             "Output format not supported. "
