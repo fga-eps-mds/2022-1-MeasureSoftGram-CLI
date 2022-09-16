@@ -22,21 +22,17 @@ def parse_get_entity(
         print("     oioi")
         host_url = check_host_url(host_url)
         host_url += (
-        'api/v1/'
-        f'organizations/{organization_id}/'
-        f'products/{product_id}/'
-        f'repositories/{repository_id}/'
-        f'{"historical-values/" if history else "latest-values/"}'
-        f'sqc/'
-        f'{entity_id if entity_id else ""}'
-
-        # http://measuresoftgram-service.herokuapp.com/api/v1/organizations/1/products/3/repositories/6/latest-values/sqc/
-
+            'api/v1/'
+            f'organizations/{organization_id}/'
+            f'products/{product_id}/'
+            f'repositories-sqc-historical-values/' if history else 'repositories-sqc-latest-values/'
         )
+
         response = ServiceClient.get_entity(host_url)
 
         extracted_data, headers, data = get_entity(
             response,
+            entity_name,
             entity_id,
             history
         )
@@ -45,7 +41,6 @@ def parse_get_entity(
             print(tabulate(extracted_data, headers=headers))
         elif output_format == 'json':
             print(json.dumps(data))
-
 
         return
 
