@@ -3,6 +3,7 @@ entities_keys = {
     'measures': 'measure_id',
     'characteristics': 'characteristic_id',
     'subcharacteristics': 'subcharacteristic_id',
+    'sqc' : ''
 }
 
 def get_entity(response, entity_name, entity_id, history):
@@ -12,6 +13,16 @@ def get_entity(response, entity_name, entity_id, history):
     else:
         extracted_data, headers, data = \
             get_without_entity_id(response, entity_name, history)
+
+    return extracted_data, headers, data
+
+def get_sqc(response, entity_id, history):
+    if entity_id:
+        extracted_data, headers, data = \
+            get_entity_id(response, history)
+    else:
+        extracted_data, headers, data = \
+            get_without_entity_id(response, history)
 
     return extracted_data, headers, data
 
